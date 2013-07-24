@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12D78" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="tWQ-lK-6ta">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
+    </dependencies>
+    <scenes>
+        <!--Mobica View Controller - Home-->
+        <scene sceneID="5">
+            <objects>
+                <viewController id="2" customClass="mobicaViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="00R-a4-GBN">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="448" id="6Vo-Yi-GJa"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="2" id="i6s-pA-5rf"/>
+                                    <outlet property="delegate" destination="2" id="Zs7-8n-w7z"/>
+                                </connections>
+                            </tableView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Select Mobica office:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Apw-tn-FTl">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="29Z-nb-Jmh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Apw-tn-FTl" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="20" symbolic="YES" type="default" id="KcY-oQ-Cf2"/>
+                            <constraint firstItem="00R-a4-GBN" firstAttribute="trailing" secondItem="3" secondAttribute="trailing" type="default" id="QCE-3e-3rm"/>
+                            <constraint firstItem="00R-a4-GBN" firstAttribute="top" secondItem="Apw-tn-FTl" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="YpK-wE-0Cc"/>
+                            <constraint firstItem="00R-a4-GBN" firstAttribute="bottom" secondItem="3" secondAttribute="bottom" type="default" id="kiS-O9-TtL"/>
+                            <constraint firstItem="00R-a4-GBN" firstAttribute="leading" secondItem="3" secondAttribute="leading" type="default" id="zHg-Yd-mIT"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Home" id="06b-4t-9Zc">
+                        <barButtonItem key="rightBarButtonItem" title="Confirm" id="17P-9W-Tyg">
+                            <connections>
+                                <segue destination="05K-hp-mQ3" kind="push" identifier="infoMobicaSeque" id="M3o-m6-aca"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="423" y="-14"/>
+        </scene>
+        <!--Info View Controller - Office info-->
+        <scene sceneID="d5y-xQ-wJ2">
+            <objects>
+                <viewController id="05K-hp-mQ3" customClass="InfoViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="YG2-T6-JS8">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A1K-ez-tX1">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="120" id="Tnr-2M-896"/>
+                                </constraints>
+                            </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vEN-QI-sdn">
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="304" id="uYl-pm-1UR"/>
+                                </constraints>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="vEN-QI-sdn" firstAttribute="trailing" secondItem="YG2-T6-JS8" secondAttribute="trailing" type="default" id="9GE-X4-O1z"/>
+                            <constraint firstItem="A1K-ez-tX1" firstAttribute="top" secondItem="YG2-T6-JS8" secondAttribute="top" type="default" id="AwR-lN-LSm"/>
+                            <constraint firstItem="vEN-QI-sdn" firstAttribute="leading" secondItem="YG2-T6-JS8" secondAttribute="leading" type="default" id="GBy-vI-meQ"/>
+                            <constraint firstItem="vEN-QI-sdn" firstAttribute="top" secondItem="A1K-ez-tX1" secondAttribute="bottom" constant="8" symbolic="YES" type="default" id="SlW-uh-BQx"/>
+                            <constraint firstItem="A1K-ez-tX1" firstAttribute="leading" secondItem="YG2-T6-JS8" secondAttribute="leading" type="default" id="Vur-kb-zJo"/>
+                            <constraint firstItem="A1K-ez-tX1" firstAttribute="trailing" secondItem="YG2-T6-JS8" secondAttribute="trailing" type="default" id="eUV-Df-NLf"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Office info" id="ZPl-Ao-MLZ">
+                        <barButtonItem key="rightBarButtonItem" title="Show on map" id="xIp-Tj-9N5">
+                            <connections>
+                                <segue destination="bWm-wp-hfN" kind="push" identifier="mapMobicaSeque" id="B3m-Ns-R7d"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="imageOffice" destination="A1K-ez-tX1" id="3UW-nO-Hz6"/>
+                        <outlet property="titleBar" destination="ZPl-Ao-MLZ" id="OZC-ay-Wbr"/>
+                        <outlet property="view" destination="YG2-T6-JS8" id="xAA-gJ-MzK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5kx-vv-zwt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1061" y="-4"/>
+        </scene>
+        <!--Map View Controller - Title-->
+        <scene sceneID="JFY-dP-Vgv">
+            <objects>
+                <viewController id="bWm-wp-hfN" customClass="MapViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jSN-OP-uq0">
+                        <rect key="frame" x="0.0" y="64" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9dk-sY-tb6">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="419" id="7kv-5J-Fk0"/>
+                                </constraints>
+                            </mapView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R3W-vK-SW1">
+                                <items>
+                                    <barButtonItem title="Revert" id="9Tv-L7-ZVV">
+                                        <connections>
+                                            <action selector="clickRevertButton:" destination="bWm-wp-hfN" id="zKj-xS-A0i"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Refresh" id="XqM-xr-3ex">
+                                        <connections>
+                                            <action selector="clickRefreshButton:" destination="bWm-wp-hfN" id="hnt-o9-97J"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Turn by turn" id="I2D-4B-sdR">
+                                        <connections>
+                                            <segue destination="Zol-aC-yFt" kind="push" identifier="HintsViewSegue" id="q7H-5D-rs9"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="R3W-vK-SW1" firstAttribute="leading" secondItem="jSN-OP-uq0" secondAttribute="leading" type="default" id="7jy-6N-EZo"/>
+                            <constraint firstItem="R3W-vK-SW1" firstAttribute="top" secondItem="9dk-sY-tb6" secondAttribute="bottom" type="default" id="NOR-Iy-LVc"/>
+                            <constraint firstItem="R3W-vK-SW1" firstAttribute="trailing" secondItem="jSN-OP-uq0" secondAttribute="trailing" type="default" id="NVy-Kx-uao"/>
+                            <constraint firstItem="9dk-sY-tb6" firstAttribute="top" secondItem="jSN-OP-uq0" secondAttribute="top" type="default" id="hwQ-yo-FTd"/>
+                            <constraint firstItem="9dk-sY-tb6" firstAttribute="trailing" secondItem="jSN-OP-uq0" secondAttribute="trailing" type="default" id="syS-fF-TaO"/>
+                            <constraint firstItem="9dk-sY-tb6" firstAttribute="leading" secondItem="jSN-OP-uq0" secondAttribute="leading" type="default" id="yDi-qf-hQk"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Title" id="Yaz-xO-4yY"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="mapTitle" destination="Yaz-xO-4yY" id="fTK-Zz-Tw4"/>
+                        <outlet property="mapView" destination="9dk-sY-tb6" id="EXv-SH-yCP"/>
+                        <outlet property="refreshButton" destination="XqM-xr-3ex" id="nQE-iK-AIZ"/>
+                        <outlet property="revertChangesButton" destination="9Tv-L7-ZVV" id="ZsY-4d-gnk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iTt-Dg-n2C" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1635" y="-14"/>
+        </scene>
+        <!--Hints View Controller-->
+        <scene sceneID="8hU-gp-SPR">
+            <objects>
+                <viewController id="Zol-aC-yFt" customClass="HintsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bVN-w8-sjQ">
+                        <rect key="frame" x="0.0" y="64" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ulr-it-3VV">
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ulr-it-3VV" firstAttribute="trailing" secondItem="bVN-w8-sjQ" secondAttribute="trailing" type="default" id="NZW-1N-ASh"/>
+                            <constraint firstItem="Ulr-it-3VV" firstAttribute="leading" secondItem="bVN-w8-sjQ" secondAttribute="leading" type="default" id="PKG-9u-SG9"/>
+                            <constraint firstItem="Ulr-it-3VV" firstAttribute="bottom" secondItem="bVN-w8-sjQ" secondAttribute="bottom" type="default" id="f9y-Df-87m"/>
+                            <constraint firstItem="Ulr-it-3VV" firstAttribute="top" secondItem="bVN-w8-sjQ" secondAttribute="top" type="default" id="pTd-v4-uBe"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="Ulr-it-3VV" id="uMg-Ld-Rue"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wGD-ds-7UZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2128" y="-14"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="EGX-oC-D3i">
+            <objects>
+                <navigationController id="tWQ-lK-6ta" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="nmI-4v-2bw">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="2" kind="relationship" relationship="rootViewController" id="WXN-aW-WBH"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Eov-Ko-srZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-103" y="-14"/>
+        </scene>
+    </scenes>
+    <classes>
+        <class className="HintsViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HintsViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
+            </relationships>
+        </class>
+        <class className="InfoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/InfoViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="imageOffice" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="titleBar" candidateClass="UINavigationItem"/>
+            </relationships>
+        </class>
+        <class className="MapViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/MapViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="clickRefreshButton:"/>
+                <relationship kind="action" name="clickRevertButton:"/>
+                <relationship kind="action" name="getCurrentLocation:"/>
+                <relationship kind="outlet" name="mapTitle" candidateClass="UINavigationItem"/>
+                <relationship kind="outlet" name="mapView" candidateClass="MKMapView"/>
+                <relationship kind="outlet" name="refreshButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="revertChangesButton" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
+        </class>
+        <class className="mobicaViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/mobicaViewController.h"/>
+        </class>
+    </classes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
