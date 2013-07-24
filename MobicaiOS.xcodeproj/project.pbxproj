@@ -28,6 +28,7 @@
 		48979F5B178AE21E005CB1E6 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48979F5A178AE21D005CB1E6 /* MapViewController.m */; };
 		48979F5D178AE463005CB1E6 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48979F5C178AE463005CB1E6 /* CoreLocation.framework */; };
 		48979F5F178AE46C005CB1E6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48979F5E178AE46C005CB1E6 /* MapKit.framework */; };
+		48FB12E1179FCFF80004C101 /* HintPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FB12E0179FCFF80004C101 /* HintPopupViewController.m */; };
 		48FC2E3717968A6E00EABAF2 /* HintsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FC2E3617968A6D00EABAF2 /* HintsViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,8 @@
 		48979F5A178AE21D005CB1E6 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
 		48979F5C178AE463005CB1E6 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		48979F5E178AE46C005CB1E6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		48FB12DF179FCFF80004C101 /* HintPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HintPopupViewController.h; sourceTree = "<group>"; };
+		48FB12E0179FCFF80004C101 /* HintPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HintPopupViewController.m; sourceTree = "<group>"; };
 		48FC2E3517968A6D00EABAF2 /* HintsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HintsViewController.h; sourceTree = "<group>"; };
 		48FC2E3617968A6D00EABAF2 /* HintsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HintsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -132,6 +135,8 @@
 				489112B4178ED68200CCC075 /* MobicaOffice.m */,
 				48FC2E3517968A6D00EABAF2 /* HintsViewController.h */,
 				48FC2E3617968A6D00EABAF2 /* HintsViewController.m */,
+				48FB12DF179FCFF80004C101 /* HintPopupViewController.h */,
+				48FB12E0179FCFF80004C101 /* HintPopupViewController.m */,
 			);
 			path = MobicaiOS;
 			sourceTree = "<group>";
@@ -229,6 +234,7 @@
 				48979F5B178AE21E005CB1E6 /* MapViewController.m in Sources */,
 				489112B5178ED68200CCC075 /* MobicaOffice.m in Sources */,
 				48FC2E3717968A6E00EABAF2 /* HintsViewController.m in Sources */,
+				48FB12E1179FCFF80004C101 /* HintPopupViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

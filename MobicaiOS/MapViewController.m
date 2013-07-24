@@ -9,6 +9,7 @@
 #import "MapViewController.h"
 #import "MobicaOffice.h"
 #import "HintsViewController.h"
+#import "HintPopupViewController.h"
 
 @interface MapViewController ()
 
@@ -31,13 +32,15 @@
     NSMutableArray *hintStringArray;
     MKPolyline *polylineInit;
     NSMutableArray *waypointsArray;
+    bool isFollowGPS;
 }
-
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 @synthesize selectedOfficeString;
 @synthesize mapTitle;
 @synthesize mapView;
 @synthesize spinner;
 @synthesize responseData = _responseData;
+@synthesize distanceLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -76,13 +79,12 @@
                                           initWithTarget:self action:@selector(longpressToSetWaypoint:)];
     lpgr.minimumPressDuration = 2.0;
     [mapView addGestureRecognizer:lpgr];
-    
+
 }
 
 - (void)connectToService:(MKUserLocation *)myLocation{
 
-    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(myLocation.coordinate, 400000, 400000);
-    [self.mapView setRegion: region animated:YES];
+
     
     UIActivityIndicatorView *tempSpinner = [[UIActivityIndicatorView alloc]  initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     self.spinner = tempSpinner;
@@ -149,9 +151,10 @@
             hintStringCut = [[[[hintString stringByReplacingOccurrencesOfString:@"<b>" withString:@""] stringByReplacingOccurrencesOfString:@"</b>" withString:@""] stringByReplacingOccurrencesOfString:@"<div style=\"font-size:0.9em\">" withString:@""] stringByReplacingOccurrencesOfString:@"</div>" withString:@""];
             
             MKPointAnnotation *hintPoint = [[MKPointAnnotation alloc] init];
+            
             hintPoint.coordinate = CLLocationCoordinate2DMake(hintLat, hintLong);
             hintPoint.title = hintStringCut;
-            hintPoint.subtitle = hintStringCut;
+            //hintPoint.subtitle = hintStringCut;
             [self.mapView addAnnotation:hintPoint];
             
             [hintPointsArray addObject:hintPoint];
@@ -214,21 +217,74 @@
     MKAnnotationView *annView = [[MKAnnotationView alloc ] initWithAnnotation:annotation reuseIdentifier:@"currentloc"];
     annView.image = [UIImage imageNamed:@"info_icon.png"];
     
-    UITextView *textVIew = [[UITextView alloc] init];
-    textVIew.text = @"tesxt";
-    textVIew.frame = CGRectMake(0, 0, annView.frame.origin.x, annView.frame.origin.y);
+    //UITextView *textVIew = [[UITextView alloc] init];
+    //textVIew.text = @"tesxt";
+    //textVIew.frame = CGRectMake(0, 0, annView.frame.origin.x, annView.frame.origin.y);
     //annView.leftCalloutAccessoryView = textVIew;
     
     UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-    [infoButton addTarget:self action:@selector(showDetailsView:)
+    [infoButton addTarget:self action:@selector(showDetailsAlert:)
          forControlEvents:UIControlEventTouchUpInside];
+    [infoButton setTitle:@"tedstsdsrfessetestest" forState:UIControlStateNormal];
     annView.rightCalloutAccessoryView = infoButton;
      annView.canShowCallout = YES;
     return annView;
 }
 
--(IBAction)showDetailsView:(id)sender{
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+{
+    NSString *hintString = [view.annotation title];
     
+    UIAlertView *alertMess = [[UIAlertView alloc] initWithTitle:@"Hint" message:hintString delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [alertMess show];
+}
+
+-(IBAction)showDetailsAlert:(id)sender{
+
+}
+
+-(IBAction)showDetailsView:(id)sender{
+    //HintPopupViewController *hintModal = [[HintPopupViewController alloc] init];
+    //hintModal.modalPresentationStyle = UIModalPresentationFormSheet;
+    //hintModal.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    //[self presentViewController:hintModal animated:YES completion:nil];
+    //hintModal.view.superview.frame = CGRectMake(0, 0, 200, 200);
+    //hintModal.view.superview.center = self.view.window.center;
+    
+    //UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard" bundle:nil];
+    //UIViewController* initialHelpView = [storyboard instantiateInitialViewController];
+    //initialHelpView.modalPresentationStyle = UIModalPresentationFormSheet;
+    //[self presentModalViewController:initialHelpView animated:YES];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:
+                                @"MainStoryboard" bundle:[NSBundle mainBundle]];
+    HintPopupViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"HintPopupViewController"];
+
+    
+    viewController.modalPresentationStyle = UIModalPresentationFormSheet;
+    viewController.modalTransitionStyle=UIModalTransitionStyleCoverVertical;
+    
+    [self presentViewController:viewController animated:YES completion:nil];
+    
+    viewController.view.superview.frame = CGRectMake(0, 0, 200, 200);
+    viewController.view.superview.center = self.view.window.center;
+    //viewController.view.superview.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+
+}
+
+
+-(double)meassureDistance: (CLLocationCoordinate2D) origin: (CLLocationCoordinate2D) dest{
+    int R = 6371;
+    double dLat = DEGREES_TO_RADIANS(dest.latitude - origin.latitude);
+    double dLon = DEGREES_TO_RADIANS(dest.longitude - origin.longitude);
+    double lat1 = DEGREES_TO_RADIANS(origin.latitude);
+    double lat2 = DEGREES_TO_RADIANS(dest.latitude);
+    
+    double a = sin(dLat/2) * sin(dLat/2) + sin(dLon/2) * sin(dLon/2) * cos(lat1) * cos(lat2);
+    double c = 2 * atan2(sqrt(a), sqrt(1-a));
+    double d = R * c;
+    
+    return d;
 }
 
 -(MKMapPoint)decodePolyAndDraw:(NSString*) encoded
@@ -280,6 +336,17 @@
     if(currentLocation == nil)
         [self connectToService:myLocation];
     currentLocation = myLocation;
+    
+    double distance = [self meassureDistance:myLocation.coordinate :officeCoordinate];
+    NSLog(@"%f", distance);
+    NSString *distanceString = [[NSMutableString alloc] init];
+    distanceString =  [distanceString stringByAppendingFormat:@"%@ : %f", @"Distance", distance];
+    [distanceLabel  setText:distanceString];
+    
+    if(isFollowGPS){
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(myLocation.coordinate, distance * 1000, distance * 1000);
+        [self.mapView setRegion: region animated:YES];
+    }
     }
 
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay {
@@ -316,6 +383,12 @@
     waypointsString = @"";
 }
 
+- (IBAction)clickFollowSwitch:(id)sender {
+    UISwitch * followSwitch = (UISwitch *) sender;
+    
+    isFollowGPS = followSwitch.isOn;
+}
+
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"HintsViewSegue"] ) {
@@ -323,6 +396,5 @@
         destViewController.hintsArray = hintStringArray;
     }
 }
-
 
 @end

@@ -14,6 +14,7 @@
 #include <CoreLocation/CLLocationManager.h>
 
 @interface MapViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate, NSURLConnectionDataDelegate>
+@property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (strong, nonatomic) NSString *selectedOfficeString;
 @property (weak, nonatomic) IBOutlet UINavigationItem *mapTitle;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -21,9 +22,12 @@
 @property (weak, nonatomic) UIActivityIndicatorView *spinner;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *refreshButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *revertChangesButton;
+@property (weak, nonatomic) IBOutlet UISwitch *followSwitch;
+
 - (IBAction)getCurrentLocation:(id)sender;
 - (IBAction)clickRefreshButton:(id)sender;
 - (IBAction)clickRevertButton:(id)sender;
+- (IBAction)clickFollowSwitch:(id)sender;
 
 
 @end
