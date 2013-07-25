@@ -10,37 +10,35 @@
 #import "MobicaOffice.h"
 #import "HintsViewController.h"
 #import "HintPopupViewController.h"
+#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
 
 @interface MapViewController ()
-
+@property CLLocationManager *locationManager;
+@property CLLocationCoordinate2D officeCoordinate;
+@property (nonatomic, strong) NSString *officeName;
+@property (nonatomic, strong) NSDictionary *hintsDict;
+@property (nonatomic, strong) NSString *waypointsString;
+@property (nonatomic, strong) NSMutableArray *hintPointsArray;
+@property (nonatomic, strong) NSMutableArray *hintPointsArrayInit;
+@property (nonatomic, strong) NSMutableArray *waypointsArray;
+@property (nonatomic, strong) NSMutableArray *hintStringArray;
 @end
 
 @implementation MapViewController{
-    CLLocationManager *locationManager;
-    NSNumber *longitudeNum;
-    NSNumber *latitudeNum;
-    NSMutableData *responseData;
-    NSString *officeName;
-    CLLocationCoordinate2D officeCoordinate;
-    NSDictionary * hintsDict;
-    NSString *waypointsString;
     MKUserLocation *currentLocation;
-    
     MKPolyline *polyline;
-    NSMutableArray *hintPointsArray;
-    NSMutableArray *hintPointsArrayInit;
-    NSMutableArray *hintStringArray;
     MKPolyline *polylineInit;
-    NSMutableArray *waypointsArray;
     bool isFollowGPS;
 }
-#define DEGREES_TO_RADIANS(angle) ((angle) / 180.0 * M_PI)
+
 @synthesize selectedOfficeString;
 @synthesize mapTitle;
 @synthesize mapView;
 @synthesize spinner;
 @synthesize responseData = _responseData;
 @synthesize distanceLabel;
+
+//@synthesize officeName = _officeName; should I have do like this and access to te iVar by self.iVar ????????????
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -56,23 +54,25 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
+    isFollowGPS = YES;
+    
     mapView.delegate = self;
     [self.view addSubview:mapView];
     
-    locationManager = [[CLLocationManager alloc] init];
+    _locationManager = [[CLLocationManager alloc] init];
     
-    officeName = selectedOfficeString;
+    _officeName = selectedOfficeString;
     //officeName = @"SZCZECIN";
     selectedOfficeString =  [selectedOfficeString stringByAppendingString:@" map"];
     mapTitle.title = selectedOfficeString;
-    waypointsString = [[NSString alloc] init];
+    _waypointsString = [[NSString alloc] init];
     
     MobicaOffice *mobicaOffice = [[MobicaOffice alloc] init];
-    officeCoordinate = [mobicaOffice getLocation:officeName];
+    _officeCoordinate = [mobicaOffice getLocation:_officeName];
     MKPointAnnotation *point = [[MKPointAnnotation alloc] init];
-    point.coordinate = officeCoordinate;
-    point.title = officeName;
+    point.coordinate = _officeCoordinate;
+    point.title = _officeName;
     [self.mapView addAnnotation:point];
     
     UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
@@ -99,12 +99,12 @@
 
     double latitude = myLocation.coordinate.latitude;
     double longitude = myLocation.coordinate.longitude;
-    double latitudeOffice = officeCoordinate.latitude;
-    double longitudeOffice = officeCoordinate.longitude;
+    double latitudeOffice = _officeCoordinate.latitude;
+    double longitudeOffice = _officeCoordinate.longitude;
 
     NSString *url = @"http://maps.googleapis.com/maps/api/directions/json?origin=";
     NSString *url2 = [NSString stringWithFormat:@"%f,%f%@%f,%f", latitude, longitude, @"&destination=", latitudeOffice, longitudeOffice];
-    NSString *url3 = [NSString stringWithFormat:@"%@%@%@", @"&waypoints=", waypointsString, @"&sensor=false"];
+    NSString *url3 = [NSString stringWithFormat:@"%@%@%@", @"&waypoints=", _waypointsString, @"&sensor=false"];
     url = [[url stringByAppendingString:url2] stringByAppendingString:url3];
     //url = [[[[[[[[url stringByAppendingString:[latitude stringValue]] stringByAppendingString:@","] stringByAppendingString:[longitude stringValue]] stringByAppendingString:@"&destination="] stringByAppendingString:[latitudeOffice stringValue]] stringByAppendingString:@","] stringByAppendingString:[longitudeOffice stringValue]] stringByAppendingString:@"&sensor=false"];
     //http://maps.googleapis.com/maps/api/directions/json?origin=51.1078852,17.0385376&destination=50.0755381,14.4378005&sensor=false
@@ -129,17 +129,22 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     NSDictionary *res = [NSJSONSerialization JSONObjectWithData:self.responseData options:NSJSONReadingMutableLeaves error:nil];
-    hintStringArray = [[NSMutableArray alloc] init];
+    
+    NSString *statusCode = [res objectForKey:@"status"];
+    
+    _hintStringArray = [[NSMutableArray alloc] init];
+    
+    if([statusCode isEqualToString:@"OK"]){
     NSArray *legs = [[[res objectForKey:@"routes"] objectAtIndex:0] objectForKey:@"legs"];
     NSLog(@"Legs %d", legs.count);
     
     for(int j = 0; j < legs.count; j++){
         NSArray *steps = [[legs objectAtIndex:j] objectForKey:@"steps"];
 
-        hintsDict = [[NSDictionary alloc] init];
+        _hintsDict = [[NSDictionary alloc] init];
         
-        if(!hintPointsArray)
-            hintPointsArray = [[NSMutableArray alloc] init];
+        if(!_hintPointsArray)
+            _hintPointsArray = [[NSMutableArray alloc] init];
 
         for(NSDictionary *step in steps){
             double hintLat = [[[step objectForKey:@"start_location"] objectForKey:@"lat"] doubleValue];
@@ -157,8 +162,8 @@
             //hintPoint.subtitle = hintStringCut;
             [self.mapView addAnnotation:hintPoint];
             
-            [hintPointsArray addObject:hintPoint];
-            [hintStringArray addObject:hintString];
+            [_hintPointsArray addObject:hintPoint];
+            [_hintStringArray addObject:hintString];
 
         }
         //hintsDict = [NSDictionary dictionaryWithObjectsAndKeys:(NSMutableArray *) hintsStringArray, (NSMutableArray *) hintsLocArray, nil];
@@ -167,11 +172,17 @@
     //NSLog(@"poly %@", poly);
     NSString *points = [poly valueForKey:@"points"];
     
-    if(!hintPointsArrayInit)
-        hintPointsArrayInit = [[NSMutableArray alloc] initWithArray:hintPointsArray];
+    if(!_hintPointsArrayInit)
+        _hintPointsArrayInit = [[NSMutableArray alloc] initWithArray:_hintPointsArray];
     [self decodePolyAndDraw:points];
-    [self.spinner stopAnimating];
     
+    }
+    else if ([statusCode isEqualToString:@"OVER_QUERY_LIMIT"]){
+        UIAlertView *alertMess = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Daily limit has been reached" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+        [alertMess show];
+    }
+    
+    [self.spinner stopAnimating];
 }
 
 - (void)longpressToSetWaypoint:(UIGestureRecognizer *)gestureRecognizer
@@ -180,29 +191,29 @@
         return;
     
     [mapView removeOverlay:polyline];
-    [mapView removeAnnotations:hintPointsArray];
+    [mapView removeAnnotations:_hintPointsArray];
     [mapView removeOverlay:polylineInit];
-    [mapView removeAnnotations:hintPointsArrayInit];
+    [mapView removeAnnotations:_hintPointsArrayInit];
     
     CGPoint touchPoint = [gestureRecognizer locationInView:self.mapView];
     CLLocationCoordinate2D location =
     [mapView convertPoint:touchPoint toCoordinateFromView:self.mapView];
     
-    if(waypointsString.length >0){
-        waypointsString = [waypointsString stringByAppendingString:@"%7C"];
+    if(_waypointsString.length >0){
+        _waypointsString = [_waypointsString stringByAppendingString:@"%7C"];
     }
     NSLog(@"Location found from Map: %f %f",location.latitude,location.longitude);
     NSString *touchPosString = [NSString stringWithFormat:@"%f,%f", location.latitude, location.longitude];
-    waypointsString = [waypointsString stringByAppendingString:touchPosString];
+    _waypointsString = [_waypointsString stringByAppendingString:touchPosString];
     
     MKPointAnnotation *waypoint = [[MKPointAnnotation alloc] init];
     waypoint.coordinate = location;
     waypoint.title = @"waypoint";
     [mapView addAnnotation:waypoint];
     
-    if(!waypointsArray)
-        waypointsArray = [[NSMutableArray alloc] init];
-    [waypointsArray addObject:waypoint];
+    if(!_waypointsArray)
+        _waypointsArray = [[NSMutableArray alloc] init];
+    [_waypointsArray addObject:waypoint];
     
     
     [self connectToService:currentLocation];
@@ -210,7 +221,7 @@
 }
 
 - (MKAnnotationView *) mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>) annotation{
-    if ([[annotation title] isEqualToString:@"Current Location"] || [[annotation title] isEqualToString:officeName]
+    if ([[annotation title] isEqualToString:@"Current Location"] || [[annotation title] isEqualToString:_officeName]
             || [[annotation title] isEqualToString:@"waypoint"]) {
         return nil;
     }
@@ -337,7 +348,7 @@
         [self connectToService:myLocation];
     currentLocation = myLocation;
     
-    double distance = [self meassureDistance:myLocation.coordinate :officeCoordinate];
+    double distance = [self meassureDistance:myLocation.coordinate :_officeCoordinate];
     NSLog(@"%f", distance);
     NSString *distanceString = [[NSMutableString alloc] init];
     distanceString =  [distanceString stringByAppendingFormat:@"%@ : %f", @"Distance", distance];
@@ -366,21 +377,21 @@
 
 - (IBAction)clickRefreshButton:(id)sender {
     [mapView removeOverlay:polyline];
-    [mapView removeAnnotations:hintPointsArray];
+    [mapView removeAnnotations:_hintPointsArray];
     [self connectToService:currentLocation];
 }
 
 - (IBAction)clickRevertButton:(id)sender {
     [mapView removeOverlay:polyline];
-    [mapView removeAnnotations:hintPointsArray];
-    [mapView removeAnnotations:waypointsArray];
+    [mapView removeAnnotations:_hintPointsArray];
+    [mapView removeAnnotations:_waypointsArray];
     
     [mapView addOverlay:polylineInit];
-    [mapView addAnnotations:hintPointsArrayInit];
+    [mapView addAnnotations:_hintPointsArrayInit];
     
-    [hintPointsArray removeAllObjects];
+    [_hintPointsArray removeAllObjects];
     polyline = [polyline init];
-    waypointsString = @"";
+    _waypointsString = @"";
 }
 
 - (IBAction)clickFollowSwitch:(id)sender {
@@ -393,7 +404,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"HintsViewSegue"] ) {
         HintsViewController *destViewController = segue.destinationViewController;
-        destViewController.hintsArray = hintStringArray;
+        destViewController.hintsArray = _hintStringArray;
     }
 }
 
